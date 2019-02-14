@@ -4,7 +4,7 @@
   "parameters": {
     "adminUsername": {
       "type": "string",
-      "defaultValue": "azureuser",
+      "defaultValue": "alamgir",
       "metadata": {
         "description": "Admin username"
       }
@@ -49,7 +49,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D1",
+      "defaultValue": "Standard_B1ms",
       "metadata": {
         "description": "Size of the VM"
       }
@@ -84,10 +84,10 @@
     "haproxyAvailabilitySetName": "haproxyAvSet",
     "appAvailabilitySetName": "appAvSet",
     "vnetName": "haproxyVNet",
-    "addressPrefix": "10.0.0.0/16",
+    "addressPrefix": "192.168.20.0/24",
     "subnetName": "Subnet-1",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables ('subnetName'))]",
-    "subnetPrefix": "10.0.0.0/24",
+    "subnetPrefix": "192.168.20.0/24",
     "lbName": "haproxyLB",
     "lbPublicIPAddressType": "Static",
     "lbPublicIPAddressName": "[concat(variables('lbName'), '-publicip')]",
