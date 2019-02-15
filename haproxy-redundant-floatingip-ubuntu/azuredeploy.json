@@ -23,28 +23,28 @@
     },
     "haproxyVMNamePrefix": {
       "type": "string",
-      "defaultValue": "haproxyvm-",
+      "defaultValue": "lbtest-haproxyvm-",
       "metadata": {
         "description": "Prefix to use for names of VMs under the load balancer"
       }
     },
     "appVMNamePrefix": {
       "type": "string",
-      "defaultValue": "appvm-",
+      "defaultValue": "lbletst-appvm-",
       "metadata": {
         "description": "Prefix to use for names of application VMs"
       }
     },
-    "ubuntuOSVersion": {
+    "OSVersion": {
       "type": "string",
-      "defaultValue": "14.04.5-LTS",
+      "defaultValue": "7.5",
       "allowedValues": [
-        "12.04.5-LTS",
-        "14.04.5-LTS",
-        "15.10"
+        "7.5",
+        "7.6",
+        "6.10"
       ],
       "metadata": {
-        "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.5-LTS, 14.04.5-LTS, 15.10."
+        "description": "The CentOS version for the VM. This will pick a fully patched image of this given CentOS version."
       }
     },
     "vmSize": {
@@ -55,8 +55,8 @@
       }
     }
   },
-  "variables": {
-    "scriptsBaseUrl": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/haproxy-redundant-floatingip-ubuntu/",
+  "variables": {                      
+    "scriptsBaseUrl": "https://raw.githubusercontent.com/alamgirm/azure-quickstart-templates/master/haproxy-redundant-floatingip-ubuntu/",
     "storageAccountName": "[concat(uniqueString(resourceGroup().id), 'haproxysa')]",
     "numberOfHAproxyInstances": 2,
     "masterHAproxyInstanceIndex": 0,
@@ -71,24 +71,24 @@
     "numberOfAppInstances": 2,
     "appVMScripts": {
       "fileUris": [
-        "[concat(variables('scriptsBaseUrl'), 'apache-setup.sh')]"
+        "[concat(variables('scriptsBaseUrl'), 'nginx-setup.sh')]"
       ],
-      "commandToExecute": "sudo bash apache-setup.sh"
+      "commandToExecute": "sudo bash nginx-setup.sh"
     },
     "appVMPort": 80,
-    "imagePublisher": "Canonical",
-    "imageOffer": "UbuntuServer",
+    "imagePublisher": "OpenLogic",
+    "imageOffer": "CentOS",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "nicNamePrefix": "nic-",
     "storageAccountType": "Standard_LRS",
-    "haproxyAvailabilitySetName": "haproxyAvSet",
-    "appAvailabilitySetName": "appAvSet",
-    "vnetName": "haproxyVNet",
+    "haproxyAvailabilitySetName": "lbtest-haproxyAvSet",
+    "appAvailabilitySetName": "lbtest-appAvSet",
+    "vnetName": "lbtest-haproxyVNet",
     "addressPrefix": "192.168.20.0/24",
     "subnetName": "Subnet-1",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables ('subnetName'))]",
     "subnetPrefix": "192.168.20.0/24",
-    "lbName": "haproxyLB",
+    "lbName": "lbtest-haproxyLB",
     "lbPublicIPAddressType": "Static",
     "lbPublicIPAddressName": "[concat(variables('lbName'), '-publicip')]",
     "lbVIPPort": 80,
@@ -327,7 +327,7 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
+            "sku": "[parameters('OSVersion')]",
             "version": "latest"
           },
           "osDisk": {
@@ -420,7 +420,7 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
+            "sku": "[parameters('OSVersion')]",
             "version": "latest"
           },
           "osDisk": {
